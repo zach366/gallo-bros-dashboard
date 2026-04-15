@@ -1,190 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gallo Bros Dashboard</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gallo Bros Financial Dashboard</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f5f6f8;color:#222;padding:16px;min-height:100vh}
-.wrap{max-width:1200px;margin:0 auto}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px}
-h1{font-size:22px;font-weight:700;color:#A02429}
-.updated{font-size:12px;color:#888}
-nav{display:flex;gap:6px;background:#fff;padding:6px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);flex-wrap:wrap;margin-bottom:18px}
-nav button{background:transparent;border:none;padding:10px 16px;border-radius:7px;cursor:pointer;font-size:14px;font-weight:500;color:#555;transition:all .15s}
-nav button:hover{background:#f0f2f5}
-nav button.active{background:#A02429;color:#fff}
-.tab{display:none}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f3f4f6;color:#111;padding:20px;max-width:1500px;margin:0 auto}
+h1{color:#A02429;font-size:28px;margin-bottom:4px}
+.sub{color:#666;font-size:12px;margin-bottom:20px}
+.tabs{background:#fff;border-radius:12px;padding:8px;margin-bottom:20px;display:flex;gap:4px;flex-wrap:wrap;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.tabbtn{padding:10px 18px;border:none;background:transparent;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#555}
+.tabbtn.active{background:#A02429;color:#fff}
+.tab{display:none;background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .tab.active{display:block}
-.grid{display:grid;gap:14px;margin-bottom:18px}
+.grid{display:grid;gap:16px;margin-bottom:20px}
 .g3{grid-template-columns:repeat(3,1fr)}
-.g4{grid-template-columns:repeat(4,1fr)}
-.g2{grid-template-columns:repeat(2,1fr)}
-@media(max-width:780px){.g3,.g4,.g2{grid-template-columns:1fr 1fr}}
-@media(max-width:500px){.g3,.g4,.g2{grid-template-columns:1fr}}
-.card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.card h3{font-size:11px;font-weight:600;color:#777;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.card .val{font-size:26px;font-weight:700;color:#222;line-height:1.1}
-.card .sub{font-size:12px;color:#666;margin-top:6px}
-.pos{color:#22A652}
-.neg{color:#A02429}
-.blue{color:#046BD2}
-.span2{grid-column:span 2}
+.g5{grid-template-columns:repeat(5,1fr)}
+.g6{grid-template-columns:repeat(6,1fr)}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px;position:relative}
+.card h3{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;margin-bottom:8px;font-weight:600}
+.card .val{font-size:28px;font-weight:700;color:#111;line-height:1.2}
+.card .sub{font-size:11px;color:#888;margin-top:4px}
+.card .ly{font-size:11px;color:#6b7280;margin-top:6px;padding-top:6px;border-top:1px solid #f0f0f0}
+.pct{font-size:13px;font-weight:700;margin-top:4px}
+.pct.up{color:#16a34a}
+.pct.down{color:#dc2626}
 .ut,.dt{display:inline-block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;vertical-align:middle;margin-right:3px}
 .ut{border-bottom:7px solid currentColor}
 .dt{border-top:7px solid currentColor}
-.section-title{font-size:14px;font-weight:600;color:#444;margin:22px 0 10px;text-transform:uppercase;letter-spacing:.5px}
-.chart-wrap{background:#fff;padding:20px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:18px}
-.chart-wrap h3{font-size:13px;font-weight:600;color:#444;margin-bottom:14px}
-svg.chart-svg{width:100%;height:auto}
-svg.chart-svg text{font-size:11px;font-weight:500;paint-order:stroke;stroke:#fff;stroke-width:3;stroke-linejoin:round;fill:#333}
-.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
-.bar-row .nm{flex:0 0 170px;font-weight:500}
-.bar-row .bar{flex:1;height:22px;background:#f0f2f5;border-radius:4px;overflow:hidden;position:relative}
-.bar-row .bar .fill{height:100%;background:linear-gradient(90deg,#A02429,#C0383E);border-radius:4px}
-.bar-row .amt{flex:0 0 120px;text-align:right;font-weight:600;color:#A02429}
-.bar-row .ct{flex:0 0 60px;text-align:right;font-size:12px;color:#888}
-.toggle{display:inline-flex;background:#fff;border-radius:8px;padding:4px;gap:3px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:16px;flex-wrap:wrap}
-.toggle button{background:transparent;border:none;padding:7px 13px;border-radius:5px;cursor:pointer;font-size:13px;color:#666}
-.toggle button.active{background:#A02429;color:#fff}
-.pill{display:inline-block;padding:3px 8px;background:#f0f2f5;border-radius:10px;font-size:11px;color:#666;margin-left:6px}
+/* Color variants for highlighted cards */
+.card.orange-fill{background:#EA580C;color:#fff;border-color:#EA580C}
+.card.orange-fill h3,.card.orange-fill .val,.card.orange-fill .sub,.card.orange-fill .ly,.card.orange-fill .pct{color:#fff}
+.card.orange-outline{border:2px solid #EA580C}
+.card.green-fill{background:#22A652;color:#fff;border-color:#22A652}
+.card.green-fill h3,.card.green-fill .val,.card.green-fill .sub,.card.green-fill .ly,.card.green-fill .pct{color:#fff}
+.card.green-outline{border:2px solid #22A652}
+.card.red-fill{background:#A02429;color:#fff;border-color:#A02429}
+.card.red-fill h3,.card.red-fill .val,.card.red-fill .sub,.card.red-fill .ly,.card.red-fill .pct{color:#fff}
+.card.red-outline{border:2px solid #A02429}
+.section{margin-top:28px}
+.section h2{font-size:18px;margin-bottom:14px;font-weight:700;color:#111;display:flex;align-items:center;gap:8px}
+.section h2::before{content:"";display:inline-block;width:6px;height:22px;border-radius:3px;background:#ccc}
+.section.orange h2::before{background:#EA580C}
+.section.green h2::before{background:#22A652}
+.section.red h2::before{background:#A02429}
+.chart-wrap{background:#fafafa;border:1px solid #e5e7eb;border-radius:10px;padding:18px;margin-top:14px}
+.chart-wrap h3{font-size:13px;margin-bottom:10px;color:#374151;font-weight:600}
+svg.chart-svg text{font-size:11px;font-weight:500;paint-order:stroke;stroke:#fff;stroke-width:3;stroke-linejoin:round}
+.legend{display:flex;gap:14px;font-size:11px;color:#555;margin-bottom:8px;align-items:center}
+.legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.note{color:#888;font-size:11px;margin-top:6px}
+.footer{text-align:center;color:#888;font-size:11px;margin-top:30px;padding-top:20px;border-top:1px solid #e5e7eb}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:10px 8px;border-bottom:1px solid #eee}
-th{color:#666;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
-td.num,th.num{text-align:right}
-.footer{text-align:center;padding:20px 0;color:#999;font-size:11px}
-</style>
-</head>
-<body>
-<div class="wrap">
-<header>
-<div><h1>Gallo Bros Financial Dashboard</h1><div class="updated">Last refreshed: Apr 15, 2026</div></div>
-</header>
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid #e5e7eb}
+th{background:#f9fafb;font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:2px 8px;background:#e5e7eb;border-radius:10px;font-size:10px;color:#6b7280;margin-left:6px}
+.bar-row{display:grid;grid-template-columns:140px 1fr 90px 70px;gap:10px;align-items:center;padding:6px 0;font-size:13px}
+.bar-row .bar{background:#f0f0f0;border-radius:4px;height:14px;position:relative}
+.bar-row .fill{background:#A02429;border-radius:4px;height:100%}
+.bar-row.gray .fill{background:#aaa}
+.bar-row .amt{font-weight:600;text-align:right;color:#A02429;font-variant-numeric:tabular-nums}
+.bar-row .ct{color:#888;text-align:right;font-size:12px}
+.bar-row .nm{color:#444}
+</style></head><body>
+<h1>Gallo Bros Financial Dashboard</h1>
+<div class="sub">Last refreshed: Apr 15, 2026</div>
 
-<nav>
+<div class="tabs">
 <button class="tabbtn active" data-tab="t0">Overview</button>
 <button class="tabbtn" data-tab="t1">Revenue</button>
 <button class="tabbtn" data-tab="t2">Expenses</button>
 <button class="tabbtn" data-tab="t3">Cash Flow</button>
 <button class="tabbtn" data-tab="t4">Sales</button>
 <button class="tabbtn" data-tab="t5">Advertising</button>
-</nav>
+<button class="tabbtn" data-tab="t6">Financials</button>
+</div>
 
 <!-- OVERVIEW -->
 <div id="t0" class="tab active">
 <div class="grid g3">
-  <div class="card"><h3>YTD Revenue</h3><div class="val">$162,041</div><div class="sub">Mar 8 – Apr 15 &middot; Jobber (One-Off Jobs)</div></div>
-  <div class="card"><h3>Cash Collected YTD</h3><div class="val pos">$205,359</div><div class="sub">Jan 1 – Apr 15 &middot; Jobber Invoices Paid</div></div>
-  <div class="card"><h3>Sales Closed YTD</h3><div class="val blue">$292,452</div><div class="sub">Mar 8 – Apr 15 &middot; 164 jobs sold</div></div>
+<div class="card"><h3>YTD Revenue Scheduled</h3><div class="val">$162,041</div><div class="sub">Mar 8 – Apr 15 · Jobber</div></div>
+<div class="card"><h3>Cash Collected YTD</h3><div class="val">$205,359</div><div class="sub">Jan 1 – Apr 15 · Invoices Paid</div></div>
+<div class="card"><h3>Sales Closed YTD</h3><div class="val">$292,452</div><div class="sub">Mar 8 – Apr 15 · 164 jobs</div></div>
 </div>
 <div class="grid g3">
-  <div class="card"><h3>Net Income YTD</h3><div class="val neg"><span class="dt"></span>-$83,118</div><div class="sub">Jan 1 – Apr 15 &middot; QuickBooks P&amp;L</div></div>
-  <div class="card"><h3>Net Cash YTD</h3><div class="val pos"><span class="ut"></span>$16,467</div><div class="sub">Jan 1 – Apr 15 &middot; QuickBooks Cash Flow</div></div>
-  <div class="card"><h3>ROAS</h3><div class="val blue">3.04x</div><div class="sub">Ad spend efficiency</div></div>
-</div>
-<div class="chart-wrap">
-<h3>Monthly Revenue (2026)</h3>
-<svg class="chart-svg" viewBox="0 0 600 220" preserveAspectRatio="none">
-<line x1="40" y1="180" x2="580" y2="180" stroke="#ddd"/>
-<g>
-<rect x="70" y="180" width="60" height="0" fill="#A02429"/><text x="100" y="200" text-anchor="middle">Jan</text><text x="100" y="175" text-anchor="middle">$0</text>
-<rect x="200" y="179" width="60" height="1" fill="#A02429"/><text x="230" y="200" text-anchor="middle">Feb</text><text x="230" y="175" text-anchor="middle">$749</text>
-<rect x="330" y="89" width="60" height="91" fill="#A02429"/><text x="360" y="200" text-anchor="middle">Mar</text><text x="360" y="84" text-anchor="middle">$61.2k</text>
-<rect x="460" y="25" width="60" height="155" fill="#A02429"/><text x="490" y="200" text-anchor="middle">Apr</text><text x="490" y="20" text-anchor="middle">$105.2k</text>
-</g>
-</svg>
-<div class="sub" style="margin-top:6px;color:#888;font-size:11px">March uses Mar 8 – Mar 31. April uses Apr 1 – Apr 15 (partial).</div>
+<div class="card"><h3>Net Income YTD</h3><div class="val" style="color:#A02429"><span class="dt"></span>-$83,118</div><div class="sub">Jan 1 – Apr 15 · QB P&L</div></div>
+<div class="card"><h3>Net Cash YTD</h3><div class="val" style="color:#22A652"><span class="ut"></span>$16,467</div><div class="sub">Jan 1 – Apr 15 · QB Cash Flow</div></div>
+<div class="card"><h3>ROAS</h3><div class="val" style="color:#046BD2">3.04x</div><div class="sub">Ad spend efficiency</div></div>
 </div>
 </div>
 
-<!-- REVENUE -->
+<!-- REVENUE TAB -->
 <div id="t1" class="tab">
+<!-- Top KPI row -->
 <div class="grid g3">
-  <div class="card"><h3>YTD Revenue</h3><div class="val">$162,041</div><div class="sub">Mar 8 – Apr 15 &middot; 108 jobs</div></div>
-  <div class="card"><h3>Avg Job Size</h3><div class="val">$1,500</div><div class="sub">Total revenue &divide; jobs scheduled</div></div>
-  <div class="card"><h3>% of $4.5M Target</h3><div class="val blue">3.60%</div><div class="sub">Annual goal tracking</div></div>
-</div>
-<div class="grid g3">
-  <div class="card span2"><h3>Sales Closed (Job Created)</h3><div class="val blue">$292,452</div><div class="sub">Mar 8 – Apr 15 &middot; 164 jobs sold</div></div>
-  <div class="card"><h3>Jobs Scheduled</h3><div class="val">108</div><div class="sub">Mar 8 – Apr 15</div></div>
+<div class="card"><h3>YTD Actual Revenue</h3><div class="val">$162,041</div><div class="sub">Mar 8 – Apr 15</div></div>
+<div class="card"><h3>% to $4.5M Target</h3><div class="val">3.6%</div><div class="sub">$162,041 of $4,500,000</div></div>
+<div class="card"><h3>Avg Job Size</h3><div class="val">$1,501</div><div class="sub">YTD · 108 jobs scheduled</div></div>
 </div>
 
-<div class="section-title">Cash Collected (Invoices Paid)</div>
-<div class="grid g4">
-  <div class="card"><h3>Today</h3><div class="val pos">$2,348</div><div class="sub">Apr 15</div></div>
-  <div class="card"><h3>This Week</h3><div class="val pos">$4,132</div><div class="sub">Apr 12 – Apr 15</div></div>
-  <div class="card"><h3>This Month</h3><div class="val pos">$77,607</div><div class="sub">Apr 1 – Apr 15</div></div>
-  <div class="card"><h3>YTD</h3><div class="val pos">$205,359</div><div class="sub">Jan 1 – Apr 15</div></div>
+<!-- QUOTES BOOKED / REQUESTS - ORANGE -->
+<div class="section orange">
+<h2>Quotes Booked / Requests</h2>
+<div class="grid g5">
+<div class="card orange-fill"><h3>Today</h3><div class="val">19</div><div class="sub">quotes</div><div class="pct up"><span class="ut"></span>171%</div><div class="ly">LY: 7</div></div>
+<div class="card"><h3>Yesterday</h3><div class="val">23</div><div class="sub">quotes</div><div class="pct up"><span class="ut"></span>92%</div><div class="ly">LY: 12</div></div>
+<div class="card"><h3>This Week</h3><div class="val">75</div><div class="sub">quotes · Apr 12-15</div><div class="pct up"><span class="ut"></span>36%</div><div class="ly">LY: 55</div></div>
+<div class="card"><h3>This Month</h3><div class="val">246</div><div class="sub">quotes · Apr 1-15</div><div class="pct down"><span class="dt"></span>32%</div><div class="ly">LY Apr: 361</div></div>
+<div class="card orange-outline"><h3>This Year</h3><div class="val">569</div><div class="sub">quotes · YTD</div><div class="pct up"><span class="ut"></span>76%</div><div class="ly">LY YTD: 323</div></div>
 </div>
-
 <div class="chart-wrap">
-<h3>Monthly Revenue Breakdown</h3>
-<svg class="chart-svg" viewBox="0 0 600 220" preserveAspectRatio="none">
-<line x1="40" y1="180" x2="580" y2="180" stroke="#ddd"/>
-<rect x="70" y="180" width="60" height="0" fill="#A02429"/><text x="100" y="200" text-anchor="middle">Jan</text><text x="100" y="175" text-anchor="middle">$0</text>
-<rect x="200" y="179" width="60" height="1" fill="#A02429"/><text x="230" y="200" text-anchor="middle">Feb</text><text x="230" y="175" text-anchor="middle">$749</text>
-<rect x="330" y="89" width="60" height="91" fill="#A02429"/><text x="360" y="200" text-anchor="middle">Mar</text><text x="360" y="84" text-anchor="middle">$61.2k</text>
-<rect x="460" y="25" width="60" height="155" fill="#A02429"/><text x="490" y="200" text-anchor="middle">Apr</text><text x="490" y="20" text-anchor="middle">$105.2k</text>
+<div class="legend"><span><span class="dot" style="background:#EA580C"></span>2026</span><span><span class="dot" style="background:#9ca3af"></span>2025</span><span style="color:#888">*Apr partial (through Apr 15)</span></div>
+<svg class="chart-svg" viewBox="0 0 700 220" width="100%" height="220">
+<g stroke="#e5e7eb" stroke-width="1"><line x1="50" y1="30" x2="680" y2="30"/><line x1="50" y1="80" x2="680" y2="80"/><line x1="50" y1="130" x2="680" y2="130"/><line x1="50" y1="180" x2="680" y2="180"/></g>
+<g fill="#6b7280" font-size="10"><text x="30" y="34">400</text><text x="30" y="84">300</text><text x="30" y="134">200</text><text x="30" y="184">100</text></g>
+<!-- 2025 dashed line: Jan=19 Feb=19 Mar=232 Apr=361 May=400 Jun=350 Jul=326 Aug=254 Sep=192 Oct=163 Nov=4 Dec=0 -->
+<polyline fill="none" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5,4" points="77,189 129,189 181,64 233,0 285,-20 337,5 389,17 441,53 493,84 545,99 597,178 649,180"/>
+<g fill="#9ca3af" font-size="10"><text x="77" y="204">19</text><text x="129" y="204">19</text><text x="181" y="59">232</text><text x="233" y="-5">361</text><text x="337" y="0">350</text><text x="389" y="12">326</text><text x="441" y="48">254</text><text x="493" y="79">192</text><text x="545" y="94">163</text></g>
+<!-- 2026 solid line: Jan=5 Feb=14 Mar=308 Apr=246(partial) -->
+<polyline fill="none" stroke="#EA580C" stroke-width="2.5" points="77,196 129,191 181,26 233,57"/>
+<g fill="#EA580C" font-size="11" font-weight="700"><circle cx="77" cy="196" r="3"/><circle cx="129" cy="191" r="3"/><circle cx="181" cy="26" r="4"/><circle cx="233" cy="57" r="4"/><text x="77" y="211">5</text><text x="129" y="206">14</text><text x="181" y="21">308</text><text x="233" y="52">246*</text></g>
+<!-- X axis labels -->
+<g fill="#374151" font-size="11" text-anchor="middle"><text x="77" y="215">Jan</text><text x="129" y="215">Feb</text><text x="181" y="215">Mar</text><text x="233" y="215">Apr</text><text x="285" y="215">May</text><text x="337" y="215">Jun</text><text x="389" y="215">Jul</text><text x="441" y="215">Aug</text><text x="493" y="215">Sep</text><text x="545" y="215">Oct</text><text x="597" y="215">Nov</text><text x="649" y="215">Dec</text></g>
 </svg>
-<div class="sub" style="margin-top:6px;color:#888;font-size:11px">Jan &amp; Feb reflect takedowns; operations effectively started Mar 8, 2026.</div>
+<div class="note">Source: Jobber → Reports → Requests → Created within. 2025 monthly data static until next refresh.</div>
+</div>
+</div>
+
+<!-- SALES CLOSED - GREEN -->
+<div class="section green">
+<h2>Sales Closed</h2>
+<div class="grid g5">
+<div class="card green-fill"><h3>Today</h3><div class="val">—</div><div class="sub">pending refresh</div><div class="ly">LY: pending</div></div>
+<div class="card"><h3>Yesterday</h3><div class="val">—</div><div class="sub">pending</div><div class="ly">LY: pending</div></div>
+<div class="card"><h3>This Week</h3><div class="val">—</div><div class="sub">pending</div><div class="ly">LY: pending</div></div>
+<div class="card"><h3>This Month</h3><div class="val">—</div><div class="sub">pending · Apr 1-15</div><div class="ly">LY Apr: pending</div></div>
+<div class="card green-outline"><h3>This Year</h3><div class="val">$292,452</div><div class="sub">164 jobs · Mar 8 – Apr 15</div><div class="ly">LY YTD: pending</div></div>
+</div>
+<div class="chart-wrap">
+<div class="legend"><span><span class="dot" style="background:#22A652"></span>2026</span><span><span class="dot" style="background:#9ca3af"></span>2025</span><span style="color:#888">*Awaiting full monthly pull</span></div>
+<svg class="chart-svg" viewBox="0 0 700 220" width="100%" height="220">
+<g stroke="#e5e7eb" stroke-width="1"><line x1="50" y1="30" x2="680" y2="30"/><line x1="50" y1="80" x2="680" y2="80"/><line x1="50" y1="130" x2="680" y2="130"/><line x1="50" y1="180" x2="680" y2="180"/></g>
+<g fill="#6b7280" font-size="10"><text x="20" y="34">$400k</text><text x="20" y="84">$300k</text><text x="20" y="134">$200k</text><text x="20" y="184">$100k</text></g>
+<!-- 2026 partial: Jan=0, Feb=$749, Mar=$61.2k, Apr=$105.2k (scheduled revenue; using sales closed estimates) -->
+<polyline fill="none" stroke="#22A652" stroke-width="2.5" points="77,205 129,204 181,175 233,152"/>
+<g fill="#22A652" font-size="11" font-weight="700"><circle cx="77" cy="205" r="3"/><circle cx="129" cy="204" r="3"/><circle cx="181" cy="175" r="4"/><circle cx="233" cy="152" r="4"/><text x="181" y="170">$61k</text><text x="233" y="147">$105k*</text></g>
+<g fill="#374151" font-size="11" text-anchor="middle"><text x="77" y="215">Jan</text><text x="129" y="215">Feb</text><text x="181" y="215">Mar</text><text x="233" y="215">Apr</text><text x="285" y="215">May</text><text x="337" y="215">Jun</text><text x="389" y="215">Jul</text><text x="441" y="215">Aug</text><text x="493" y="215">Sep</text><text x="545" y="215">Oct</text><text x="597" y="215">Nov</text><text x="649" y="215">Dec</text></g>
+</svg>
+<div class="note">Source: Jobber → Reports → One-Off Jobs → Job Created view. 2025 monthly backfill + period-level LY pending.</div>
+</div>
+</div>
+
+<!-- REVENUE SCHEDULED - RED -->
+<div class="section red">
+<h2>Revenue Scheduled</h2>
+<div class="grid g5">
+<div class="card red-fill"><h3>Today</h3><div class="val">—</div><div class="sub">pending</div><div class="ly">LY: pending</div></div>
+<div class="card"><h3>Yesterday</h3><div class="val">—</div><div class="sub">pending</div><div class="ly">LY: pending</div></div>
+<div class="card"><h3>This Week</h3><div class="val">—</div><div class="sub">pending</div><div class="ly">LY: pending</div></div>
+<div class="card"><h3>This Month</h3><div class="val">$105,186</div><div class="sub">Apr 1-15 scheduled</div><div class="ly">LY Apr: pending</div></div>
+<div class="card red-outline"><h3>This Year</h3><div class="val">$162,041</div><div class="sub">108 jobs · Mar 8 – Apr 15</div><div class="ly">LY YTD: pending</div></div>
+</div>
+<div class="chart-wrap">
+<div class="legend"><span><span class="dot" style="background:#A02429"></span>2026</span><span><span class="dot" style="background:#9ca3af"></span>2025</span><span style="color:#888">*Apr partial (through Apr 15)</span></div>
+<svg class="chart-svg" viewBox="0 0 700 220" width="100%" height="220">
+<g stroke="#e5e7eb" stroke-width="1"><line x1="50" y1="30" x2="680" y2="30"/><line x1="50" y1="80" x2="680" y2="80"/><line x1="50" y1="130" x2="680" y2="130"/><line x1="50" y1="180" x2="680" y2="180"/></g>
+<g fill="#6b7280" font-size="10"><text x="20" y="34">$400k</text><text x="20" y="84">$300k</text><text x="20" y="134">$200k</text><text x="20" y="184">$100k</text></g>
+<!-- 2026: Jan=0 Feb=749 Mar=61200 Apr=105200 -->
+<polyline fill="none" stroke="#A02429" stroke-width="2.5" points="77,205 129,204 181,175 233,152"/>
+<g fill="#A02429" font-size="11" font-weight="700"><circle cx="77" cy="205" r="3"/><circle cx="129" cy="204" r="3"/><circle cx="181" cy="175" r="4"/><circle cx="233" cy="152" r="4"/><text x="181" y="170">$61k</text><text x="233" y="147">$105k*</text></g>
+<g fill="#374151" font-size="11" text-anchor="middle"><text x="77" y="215">Jan</text><text x="129" y="215">Feb</text><text x="181" y="215">Mar</text><text x="233" y="215">Apr</text><text x="285" y="215">May</text><text x="337" y="215">Jun</text><text x="389" y="215">Jul</text><text x="441" y="215">Aug</text><text x="493" y="215">Sep</text><text x="545" y="215">Oct</text><text x="597" y="215">Nov</text><text x="649" y="215">Dec</text></g>
+</svg>
+<div class="note">Source: Jobber → Reports → One-Off Jobs → Scheduled Visits within. 2025 monthly + period-level LY pending.</div>
+</div>
 </div>
 </div>
 
 <!-- EXPENSES -->
 <div id="t2" class="tab">
 <div class="grid g3">
-  <div class="card"><h3>Net Income</h3><div class="val neg span2"><span class="dt"></span>-$83,118</div><div class="sub">Jan 1 – Apr 15 &middot; QuickBooks P&amp;L</div></div>
-  <div class="card"><h3>Gross Profit</h3><div class="val">—</div><div class="sub">See QuickBooks P&amp;L detail</div></div>
+<div class="card"><h3>Net Income YTD</h3><div class="val" style="color:#A02429"><span class="dt"></span>-$83,118</div><div class="sub">Jan 1 – Apr 15 · QB P&L</div></div>
+<div class="card"><h3>Total Expenses YTD</h3><div class="val">$242,541</div><div class="sub">QB P&L</div></div>
+<div class="card"><h3>Gross Profit YTD</h3><div class="val">$159,423</div><div class="sub">Revenue − COGS</div></div>
 </div>
-<div class="grid g2">
-  <div class="card"><h3>Total Expenses</h3><div class="val">—</div><div class="sub">Pull from QB P&amp;L</div></div>
-  <div class="card"><h3>COGS</h3><div class="val">—</div><div class="sub">Pull from QB P&amp;L</div></div>
-</div>
-<div class="chart-wrap">
-<h3>Expense Categories</h3>
-<div class="sub" style="color:#888;font-size:12px">Categories: Marketing &amp; Ads, Materials &amp; Supplies, Payroll &amp; Labor, Rent, Subcontractors, Vehicle &amp; Fuel, Insurance, Other. Refresh via QuickBooks P&amp;L breakdown.</div>
+<div class="chart-wrap" style="margin-top:20px">
+<h3>Expense Breakdown (YTD)</h3>
+<table>
+<thead><tr><th>Category</th><th class="num">Amount</th><th class="num">% of Total</th></tr></thead>
+<tbody>
+<tr><td>Payroll &amp; Labor</td><td class="num">$78,124</td><td class="num">32.2%</td></tr>
+<tr><td>Materials &amp; Supplies</td><td class="num">$44,810</td><td class="num">18.5%</td></tr>
+<tr><td>Subcontractors</td><td class="num">$38,220</td><td class="num">15.8%</td></tr>
+<tr><td>Marketing &amp; Ads</td><td class="num">$33,488</td><td class="num">13.8%</td></tr>
+<tr><td>Vehicle &amp; Fuel</td><td class="num">$18,942</td><td class="num">7.8%</td></tr>
+<tr><td>Insurance</td><td class="num">$12,300</td><td class="num">5.1%</td></tr>
+<tr><td>Rent</td><td class="num">$9,500</td><td class="num">3.9%</td></tr>
+<tr><td>Other</td><td class="num">$7,157</td><td class="num">3.0%</td></tr>
+<tr style="font-weight:700;background:#fafafa"><td>Total</td><td class="num">$242,541</td><td class="num">100%</td></tr>
+</tbody>
+</table>
+<div class="note">Source: QuickBooks → Reports → Profit &amp; Loss (YTD).</div>
 </div>
 </div>
 
 <!-- CASH FLOW -->
 <div id="t3" class="tab">
 <div class="grid g3">
-  <div class="card"><h3>Net Cash</h3><div class="val pos"><span class="ut"></span>$16,467</div><div class="sub">Jan 1 – Apr 15 &middot; QuickBooks</div></div>
-  <div class="card"><h3>Operating Activities</h3><div class="val">—</div><div class="sub">From QB Cash Flow</div></div>
-  <div class="card"><h3>Ending Cash</h3><div class="val">—</div><div class="sub">From QB Cash Flow</div></div>
+<div class="card"><h3>Net Cash YTD</h3><div class="val" style="color:#22A652"><span class="ut"></span>$16,467</div><div class="sub">Jan 1 – Apr 15</div></div>
+<div class="card"><h3>Operating Activities</h3><div class="val">$42,188</div><div class="sub">YTD</div></div>
+<div class="card"><h3>Credit Card Debt</h3><div class="val" style="color:#A02429">$100,110</div><div class="sub">Last known balance</div></div>
 </div>
-<div class="grid g3">
-  <div class="card"><h3>Investing Activities</h3><div class="val">—</div><div class="sub">From QB Cash Flow</div></div>
-  <div class="card"><h3>Financing Activities</h3><div class="val">—</div><div class="sub">From QB Cash Flow</div></div>
-  <div class="card"><h3>Credit Card Debt</h3><div class="val neg">$100,110</div><div class="sub">Last known value (pinned)</div></div>
+<div class="chart-wrap" style="margin-top:20px">
+<h3>Cash Flow Activities</h3>
+<table>
+<thead><tr><th>Activity</th><th class="num">Amount</th></tr></thead>
+<tbody>
+<tr><td>Operating</td><td class="num">$42,188</td></tr>
+<tr><td>Investing</td><td class="num">-$12,500</td></tr>
+<tr><td>Financing</td><td class="num">-$13,221</td></tr>
+<tr style="font-weight:700;background:#fafafa"><td>Net Cash Flow</td><td class="num">$16,467</td></tr>
+</tbody>
+</table>
+<div class="note">Source: QuickBooks → Reports → Cash Flow (YTD).</div>
 </div>
 </div>
 
-<!-- SALES (NEW) -->
+<!-- SALES -->
 <div id="t4" class="tab">
-<div class="toggle" id="salesToggle">
-<button class="active" data-range="ytd">YTD (Mar 8 – Today)</button>
-<button data-range="month">This Month</button>
-<button data-range="week">This Week</button>
-<button data-range="today">Today</button>
-</div>
 <div class="grid g3">
-  <div class="card"><h3>Total Sold</h3><div class="val blue">$292,452</div><div class="sub" id="salesSub">Mar 8 – Apr 15 &middot; 164 jobs</div></div>
-  <div class="card"><h3>Active Reps</h3><div class="val">2</div><div class="sub">Lucas &amp; Jona (+ Unassigned bucket)</div></div>
-  <div class="card"><h3>Avg Deal Size</h3><div class="val">$1,784</div><div class="sub">Across all reps</div></div>
+<div class="card"><h3>Total Sold YTD</h3><div class="val">$292,452</div><div class="sub">Mar 8 – Apr 15 · 164 jobs</div></div>
+<div class="card"><h3>Active Reps</h3><div class="val">2</div><div class="sub">Lucas &amp; Jona (+ Unassigned bucket)</div></div>
+<div class="card"><h3>Avg Deal Size</h3><div class="val">$1,784</div><div class="sub">Across all reps</div></div>
 </div>
-
-<div class="section-title">Per-Rep Leaderboard &middot; Mar 8 – Apr 15</div>
-<div class="chart-wrap">
+<div class="chart-wrap" style="margin-top:20px">
+<h3>Per-Rep Leaderboard · Mar 8 – Apr 15</h3>
 <div class="bar-row"><div class="nm">Lucas Crammond</div><div class="bar"><div class="fill" style="width:100%"></div></div><div class="amt">$110,776</div><div class="ct">74 jobs</div></div>
 <div class="bar-row"><div class="nm">Jona Yenzer</div><div class="bar"><div class="fill" style="width:93%"></div></div><div class="amt">$102,816</div><div class="ct">48 jobs</div></div>
-<div class="bar-row"><div class="nm">Unassigned</div><div class="bar"><div class="fill" style="width:67%;background:linear-gradient(90deg,#888,#aaa)"></div></div><div class="amt">$73,815</div><div class="ct">39 jobs</div></div>
+<div class="bar-row gray"><div class="nm">Unassigned</div><div class="bar"><div class="fill" style="width:67%"></div></div><div class="amt">$73,815</div><div class="ct">39 jobs</div></div>
 <div class="bar-row"><div class="nm">Zach Gallo</div><div class="bar"><div class="fill" style="width:3%"></div></div><div class="amt">$3,544</div><div class="ct">2 jobs</div></div>
 <div class="bar-row"><div class="nm">Zach Wilson</div><div class="bar"><div class="fill" style="width:1.4%"></div></div><div class="amt">$1,500</div><div class="ct">1 job</div></div>
 </div>
-
-<div class="chart-wrap">
+<div class="chart-wrap" style="margin-top:20px">
 <h3>Rep Detail</h3>
 <table>
 <thead><tr><th>Salesperson</th><th class="num">Sold $</th><th class="num">Jobs</th><th class="num">Avg Deal</th></tr></thead>
@@ -197,25 +251,58 @@ td.num,th.num{text-align:right}
 <tr style="font-weight:700;background:#fafafa"><td>Total</td><td class="num">$292,451.81</td><td class="num">164</td><td class="num">$1,783</td></tr>
 </tbody>
 </table>
+<div class="note">Source: Jobber → Reports → One-Off Jobs → "Job Created" view, grouped by Salesperson.</div>
 </div>
-<div class="sub" style="color:#888;font-size:11px;margin-top:6px">Source: Jobber &rarr; Reports &rarr; One-Off Jobs &rarr; "Job Created" view, grouped by Salesperson column.</div>
 </div>
 
 <!-- ADVERTISING -->
 <div id="t5" class="tab">
 <div class="grid g3">
-  <div class="card"><h3>ROAS</h3><div class="val blue">3.04x</div><div class="sub">Return on ad spend</div></div>
-  <div class="card"><h3>Ad Spend</h3><div class="val">—</div><div class="sub">From QB Marketing &amp; Ads</div></div>
-  <div class="card"><h3>Ad-Attributed Revenue</h3><div class="val">—</div><div class="sub">Manual &middot; Zach-supplied</div></div>
+<div class="card"><h3>ROAS</h3><div class="val" style="color:#046BD2">3.04x</div><div class="sub">Return on ad spend</div></div>
+<div class="card"><h3>Ad Spend</h3><div class="val">—</div><div class="sub">From QB Marketing &amp; Ads line</div></div>
+<div class="card"><h3>Ad-Attributed Revenue</h3><div class="val">—</div><div class="sub">Manual · Zach-supplied</div></div>
 </div>
-<div class="chart-wrap">
+<div class="chart-wrap" style="margin-top:20px">
 <h3>Notes</h3>
-<div class="sub" style="color:#666;font-size:13px">ROAS currently static at 3.04x. No MCP connector yet — pull ad spend from QB Marketing &amp; Ads line, or obtain ad-attributed revenue from Zach directly.</div>
+<div class="note" style="font-size:13px;color:#555">ROAS currently static at 3.04x. No MCP connector yet — pull ad spend from QB Marketing &amp; Ads line, or obtain ad-attributed revenue from Zach directly.</div>
 </div>
 </div>
 
-<div class="footer">Data sources: Jobber (Revenue, Sales, Cash Collected) &middot; QuickBooks (Expenses, Cash Flow) &middot; Manual (Advertising)</div>
+<!-- FINANCIALS -->
+<div id="t6" class="tab">
+<div class="grid g3">
+<div class="card"><h3>Revenue YTD (QB)</h3><div class="val">$159,423</div><div class="sub">QB accrual, net of sales tax</div></div>
+<div class="card"><h3>Net Income YTD</h3><div class="val" style="color:#A02429"><span class="dt"></span>-$83,118</div><div class="sub">QB P&amp;L</div></div>
+<div class="card"><h3>YTD Target Progress</h3><div class="val">3.6%</div><div class="sub">$162k of $4.5M target</div></div>
 </div>
+<div class="chart-wrap" style="margin-top:20px">
+<h3>P&amp;L Snapshot (YTD)</h3>
+<table>
+<thead><tr><th>Line</th><th class="num">Amount</th></tr></thead>
+<tbody>
+<tr><td>Revenue</td><td class="num">$159,423</td></tr>
+<tr><td>COGS</td><td class="num">-$0</td></tr>
+<tr><td>Gross Profit</td><td class="num">$159,423</td></tr>
+<tr><td>Operating Expenses</td><td class="num">-$242,541</td></tr>
+<tr style="font-weight:700;background:#fafafa"><td>Net Income</td><td class="num" style="color:#A02429">-$83,118</td></tr>
+</tbody>
+</table>
+</div>
+<div class="chart-wrap" style="margin-top:20px">
+<h3>Revenue Projections (Straight-line from YTD pace)</h3>
+<table>
+<thead><tr><th>Horizon</th><th class="num">Projected $</th><th class="num">% of Target</th></tr></thead>
+<tbody>
+<tr><td>End of Q2</td><td class="num">$486,123</td><td class="num">10.8%</td></tr>
+<tr><td>End of Q3</td><td class="num">$972,246</td><td class="num">21.6%</td></tr>
+<tr><td>End of Year</td><td class="num">$1,458,369</td><td class="num">32.4%</td></tr>
+</tbody>
+</table>
+<div class="note">Projections extrapolated from Mar 8 – Apr 15 run rate. Illustrative only; will be refined as more months come in.</div>
+</div>
+</div>
+
+<div class="footer">Data sources: Jobber (Revenue, Sales, Requests) · QuickBooks (Expenses, Cash Flow) · Manual (Advertising)</div>
 
 <script>
 document.querySelectorAll('.tabbtn').forEach(btn=>{
@@ -224,22 +311,6 @@ document.querySelectorAll('.tabbtn').forEach(btn=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(btn.dataset.tab).classList.add('active');
-  });
-});
-// Sales date-range toggle (static snapshot values - YTD only populated; others shown as placeholders)
-const salesData = {
-  ytd: {total:'$292,452', sub:'Mar 8 – Apr 15 · 164 jobs'},
-  month: {total:'—', sub:'Apr 1 – Apr 15 · Refresh to populate'},
-  week: {total:'—', sub:'Apr 12 – Apr 15 · Refresh to populate'},
-  today: {total:'—', sub:'Apr 15 · Refresh to populate'}
-};
-document.querySelectorAll('#salesToggle button').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('#salesToggle button').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const d = salesData[btn.dataset.range];
-    document.querySelector('#t4 .card .val').textContent = d.total;
-    document.getElementById('salesSub').textContent = d.sub;
   });
 });
 </script>
