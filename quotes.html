@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#c94a0c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="GB Quotes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>GB Quotes</title>
+  <link rel="manifest" href="quotes-manifest.json" />
+  <link rel="apple-touch-icon" href="quotes-icon-192.png" />
+  <style>
+    :root { --orange:#c94a0c; --bg:#f0f0f0; --card-bg:#fff; --text:#111; --muted:#888; --border:#e4e4e7; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); }
+    * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); min-height:100dvh; padding-bottom:calc(24px + var(--safe-bottom)); }
+    .header { background:var(--orange); color:#fff; padding:calc(16px + var(--safe-top)) 20px 20px; }
+    .header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+    .header h1 { font-size:20px; font-weight:800; }
+    .header .logo { width:36px; height:36px; background:rgba(255,255,255,0.2); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+    .header .subtitle { font-size:12px; opacity:0.75; margin-top:2px; }
+    .hero { margin:20px 16px 0; background:var(--orange); border-radius:20px; padding:28px 24px; color:#fff; box-shadow:0 8px 24px rgba(201,74,12,0.35); position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; top:-30px; right:-30px; width:140px; height:140px; border-radius:50%; background:rgba(255,255,255,0.08); }
+    .hero::after { content:''; position:absolute; bottom:-50px; right:40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.05); }
+    .hero-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; opacity:0.8; margin-bottom:6px; }
+    .hero-number { font-size:72px; font-weight:800; line-height:1; letter-spacing:-3px; }
+    .hero-sub { font-size:14px; opacity:0.8; margin-top:6px; }
+    .section-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--muted); padding:20px 20px 8px; }
+    .cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 16px; }
+    .card { background:var(--card-bg); border-radius:16px; padding:18px 16px; border:1px solid var(--border); box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+    .card.year { grid-column:span 2; border:2px solid var(--orange); display:flex; align-items:center; justify-content:space-between; }
+    .card-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--muted); margin-bottom:8px; }
+    .card-number { font-size:36px; font-weight:800; line-height:1; letter-spacing:-1px; color:var(--text); }
+    .card.year .card-number { font-size:40px; color:var(--orange); }
+    .card-sub { font-size:11px; color:var(--muted); margin-top:5px; }
+    .card-right { text-align:right; }
+    .refresh-row { padding:24px 20px 0; display:flex; align-items:center; gap:10px; }
+    .refresh-btn { flex:1; background:var(--orange); color:#fff; border:none; border-radius:12px; padding:14px 20px; font-size:14px; font-weight:700; cursor:pointer; }
+    .jobber-btn { background:var(--card-bg); color:var(--orange); border:2px solid var(--orange); border-radius:12px; padding:14px 16px; font-size:13px; font-weight:700; text-decoration:none; }
+    .footer { text-align:center; font-size:11px; color:#bbb; padding:20px 20px 0; }
+    .loading { display:none; opacity:0.5; font-size:13px; color:var(--muted); padding:12px 20px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-top"><h1>Gallo Bros</h1><div class="logo">&#x1F9F9;</div></div>
+    <div class="subtitle">Quotes Booked Overview</div>
+  </div>
+  <div class="hero">
+    <div class="hero-label">Today &middot; <span id="today-date">Apr 15, 2026</span></div>
+    <div class="hero-number" id="today-count">22</div>
+    <div class="hero-sub">quotes booked</div>
+  </div>
+  <div class="section-title">Other Periods</div>
+  <div class="cards">
+    <div class="card"><div class="card-label">Yesterday</div><div class="card-number">23</div><div class="card-sub">Apr 14</div></div>
+    <div class="card"><div class="card-label">This Week</div><div class="card-number">74</div><div class="card-sub">Apr 13&ndash;15</div></div>
+    <div class="card"><div class="card-label">This Month</div><div class="card-number">249</div><div class="card-sub">Apr 1&ndash;15</div></div>
+    <div class="card year">
+      <div><div class="card-label">This Year &middot; YTD</div><div class="card-number" style="color:var(--orange)">572</div></div>
+      <div class="card-right"><div class="card-label">Jan 1&ndash;Apr 15</div><div style="font-size:13px;color:#c94a0c;font-weight:700;">2026</div></div>
+    </div>
+  </div>
+  <div class="refresh-row">
+    <a href="https://secure.getjobber.com/reporting/requests?dateFilter=createdAt&dateAfter=TODAY&dateBefore=TODAY" class="jobber-btn" target="_blank">&#x1F4CA; Jobber</a>
+    <button class="refresh-btn" onclick="showRefreshTip()">&#x21BB; Refresh</button>
+  </div>
+  <p class="loading" id="refresh-tip">To refresh: ask Claude to pull updated numbers from Jobber.</p>
+  <div class="footer">Last pulled: Apr 15, 2026 &middot; Live from Jobber<br/>Source: Jobber &rarr; Reports &rarr; Requests</div>
+  <script>
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('quotes-sw.js').catch(function(){}); }
+    function todayStr() { return new Date().toISOString().split('T')[0]; }
+    document.querySelectorAll('.jobber-btn').forEach(function(a){ a.href = a.href.replace(/TODAY/g, todayStr()); });
+    function showRefreshTip(){ var el=document.getElementById('refresh-tip'); el.style.display='block'; setTimeout(function(){ el.style.display='none'; },4000); }
+  </script>
+</body>
+</html>
