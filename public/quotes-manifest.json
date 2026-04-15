@@ -1,0 +1,19 @@
+{
+  "name": "GB Quotes Dashboard",
+  "short_name": "GB Quotes",
+  "description": "Gallo Bros Power Washing - Quotes Booked Overview",
+  "start_url": "/quotes.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#c94a0c",
+  "theme_color": "#c94a0c",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%23c94a0c'/><text x='50%25' y='48%25' font-size='72' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='system-ui'>GB</text><text x='50%25' y='72%25' font-size='22' font-weight='bold' fill='rgba(255,255,255,0.8)' text-anchor='middle' dominant-baseline='middle' font-family='system-ui'>QUOTES</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"]
+}
